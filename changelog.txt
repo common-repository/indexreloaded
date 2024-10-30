@@ -1,0 +1,189 @@
+*** WordPress Plugin IndexReloaded Changelog ***
+
+2024.10.01 - version 1.2.1
+* Fix	- Possible error in indexreloaded-frontend.php, because WordPress-backend-function is_plugin_active() is not present, is fixed
+* Fix   - Minor CSS improvement in backend (Show Settings button) 
+
+2024.09.30 - version 1.2.0
+* New	- Compatibility with Page Cache-Plugins WP Fastest Cache, W3 Total Cache, Super Page Cache, Rapid Cache, Hummingbird, WP Optimize, Hyper Cache, SpeedyCache, 
+          Comet Cache, Cache Enabler, Borlabs Cache, Cachify, Swift Performance Lite, LiteSpeed Cache and WP Super Cache. 
+          The compatibility concerns: CCSS to be delivered on 2nd page call, serving fresh pages after ajax-requests, serving fresh page after calling it using URL-paramenter "?forceNewFiles=1",
+          for these reasons individual page cache files need to be removed. After file deletion in backend, the entire page cache is purged.
+* Fix   - Host external CSS and JS locally: External font-files in CSS get hosted locally as well.
+* Tweak - Keep time for generated CSS, JS and external files has new default value 0 (no automatic deletion after specified time in days).
+* Fix	- Checking if file exists before unlinking in backend
+
+2024.08.30 - version 1.1.1
+* Fix   - "Deactivate on pages" accepts partitial page-URLs (URL must contain 3 or more slashes)
+* Fix   - Host external CSS and JS locally: External files from maps.gooleapi.com won't be saved locally, because they don't work
+* Fix   - external CSS and JS, if added to the excludes list, will be ignored
+* Fix   - CCSS: Selector extraction improved, support for another kind of bracket-expression, added enhanced support for more complicated where-not contstructs
+
+2024.07.21 - version 1.1.0
+* New   - Host external CSS and JS locally, it can be enabled or disabled in Backend -> Settings -> Rules for CSS and JS processing.
+		  See if any external files got locally hosted in Overview-panel under Files
+* New   - Automatic preloads for generated css, js and jquery
+* Tweak - List of recommended plugin-excludes reduced
+* Tweak - Exclusion of Inline-JS happens automatically only if reference to a "nonce" is contained and detected, CDATA is not a filter no more
+* Fix   - Processing now includes inline-scripts, found directly after calls to externally hosted scripts, properly
+* Fix   - Processing for CCSS now includes inline-scripts with type="text/html" in models HTML-base, before only scripts with type="text/template" got included
+* New   - When JS defering is active, then inline-JS transforms to defered JS as well. Inline-code will be base64-encoded and loaded as src="data:text/javascript;base64,... 
+          Note that servers having the "Header set Content-Security-Policy"-directive set up in Apache-configuration need to add to "script-src" data for data, like "data: data;"
+* New   - In backend a new button "reveal cached pages" has been added. It includes removal for individual cache-entries.
+* New   - In settings we added a link back to overview in region of top of page.
+* New   - Processing for CCSS retriggers model creation if size of html to be processed exceeds former size by more than 40 Bytes. 
+          This addresses the "Empty cart CCSS"-issue, where CCSS created for the empty cart-page is not covering the needs of the cart-page with products.
+
+2024.06.14 - version 1.0.2
+* New   - CSS inside <noscript>-tags is not processed anymore
+* New   - Objectcache is deleted for IndexReloaded after customizing the theme
+* Tweak - Preloads of font-file will only load, if the referenced filename is present in pagesource, however this requires critical CSS to be set inline to the page
+* Fix   - Support for external JS-files - without .js-fileextention - that are loaded using CGI-call to server
+* Fix   - Critical fonts processing in CCSS-creation, missing font-weight 700, when only implied by strong, h1 or h2-tags, is fixed
+* Fix	- Selector :checked not in CCSS, when critical
+
+2024.05.15 - version 1.0.1
+* Fix	- Possible error in indexreloaded.php, because WordPress-backend-function is_plugin_active() is not present, is fixed
+* Fix   - Added difference in classes (model from server versus model from client) to valid client-model 
+* New   - Added critical fonts processing in CCSS-creation
+* Tweak - Added JS-file parameters to grouped extracted JS as variables (with value)
+* Tweak - Preloads of images, CSS- or JS-file will only load, if the referenced filename is present in pagesource
+* Fix   - CCSS processing of selectors having multiple tilde (~), plus (1) oder '>'s now translate to check selector sequence with correct element indexes
+
+2024.04.04 - version 1.0.0
+* Fix - Exclude 404-pages from processing
+* New - Tested and works with WordPress 6.5
+* New - Information on cache usage and possibility to delete cache (button) in Backend->IndexReloaded->Overview
+* Fix - CCSS processing now includes checks on new modeldata for (partly) numeric classes and ids
+* Fix - CCSS processing of tilde (~) selector element operator in check selector sequence is perfect now
+* Fix - CCSS processing of bigger than (>) selector element operator in check selector sequence is perfect now
+* New - Version ready for release over wordpress.org - heading for the review :-)
+* New - Automatic fix for images without width/height set
+
+2024.03.15 - version 1.0.0 Beta 15032024-1
+* Fix - Selectors like #someid > div > div + div (multiple same tags and >, ~ or + betwen them) did go into CSS below due to insufficient logics in code. This has been enhanced and the error is fixed
+
+2024.03.12 - version 1.0.0 Beta 12032024-1
+* Fix - PHP_Codesniffer using Wordpress 3.0.1: All errors and warnings fixed, see https://github.com/WordPress/WordPress-Coding-Standards
+* New - Added userrole-md5 to CCSS-model, enabling possible different HTML to be processed correctly when users are logged in
+
+2024.02.29 - version 1.0.0 Beta 29022024-1
+* New - Added code for uninstallation of the plugin
+* Fix - Eliminated Server-error 500 on notices dismissal
+
+2024.02.27 - version 1.0.0 Beta 27022024-1
+* Fix - Set required PHP-Version from 8.0 to 7.0 again. However a note will display in Backend, if you use PHP lower than 8.0
+* New - Option "Defer remaining JS after processing", when processing JS, the remaining JS in HTML will be deferred (only links to files)
+		So with this remaining remaining "Eliminate render-blocking resources" penalty points for JS on PageSpeed View disappear
+		Now if you "refuse" to identify JS that must not be grouped, because of JS-errors you might encounter, 
+		you can try use '.js,-js' in option "Exclude list" (which excludes probably every JS from getting regrouped) and then defer it.
+		But be aware that it might look better on PageSpeed then, but with the complete grouping it would still look a lot better.
+* Fix - Exclusion for "type=text/html" and "type=text/template" scripts needed some improvement to reach needed precision
+* Fix - Notices in the backend on WordPress- or PHP-version are now dismissable
+
+2024.02.22 - version 1.0.0 Beta 22022024-1
+* Fix - Raised cache-time for redis-cache to 60 days
+
+2024.02.21 - version 1.0.0 Beta 21022024-1
+* Fix - CCSS, added support for pages not containing jquery
+* Fix - CCSS, added support for sites that don't have Redis running
+
+2024.02.20 - version 1.0.0 Beta 20022024-1
+* New - Added (important) ajax backpost of rendered final html to server - it then serves from redis into the model-creation-process for CCSS-creation. 
+		Redis cached objects have a 24 hours cache-time and get removed by option-save, post-save or plugin-install
+* Fix - Another and hopefully last selector dropping during extract unsupported CSS fixed
+* Fix - Wrong delay handling for licence key validation
+* New - In IndexReloaded.php there's an option $errlog_caching to enable a little trace of object cache handling
+
+2024.02.19 - version 1.0.0 Beta 19022024-1
+* Fix - JSmin.php replaced by newer version
+* Fix - Selector dropping during extract unsupported CSS fixed
+
+2024.02.18 - version 1.0.0 Beta 18022024-1
+* Fix - Fail of JS-minify on template-strings is fixed
+* New - Option "Remove CSS from CSS below if it doesn't sort out CCSS" in section Critical CSS. It reduces CSS below by around 20%
+
+2024.02.17 - version 1.0.0 Beta 17022024-1
+* New - CSSAboveBelow.php now contains an option $track_heavy_selectors, default FALSE, allowing complex selectors (with :is(, :where( and :not( is multi combinations) to be detected and traced to the error_log
+
+2024.02.15 - version 1.0.0 Beta 15022024-1
+* Change - Removed option 'Enable file processing' from backend
+* Fix - Exclude inline-JS with type="text/template" from regrouping 
+* New - Excludes for 3 more WP plugins added
+
+2024.02.13 - version 1.0.0 Beta 13022024-1
+* Fix - cleaning up code
+* Fix - fixed struggle with pseudoselector sequence :is: .. :where( .. :is(
+* Change - Removed options 'Exclude inline JS', 'Exclude inline CSS' and 'Includes list' from backend
+
+2024.02.09 - version 1.0.0 Beta 09022024-1
+* Fix - fixed :where(:not( with multiple :not(s
+
+2024.02.08 - version 1.0.0 Beta 08022024-1
+* Fix - fixed rare 'lost selectors' in folding process
+
+2024.02.06 - version 1.0.0 Beta 06022024-1
+ * New - Option to enable/disable inline critical CSS
+ * New - JS-concatenation: The end of the complete CDATA-ban. Some CDATA are allowed for processing, because they relay on JS-Files loaded before and they do not spawn JS-file creation (always changing values like wp_nonces)
+ * Fix - fixed several stupid bugs after intense testing :-)
+
+2024.01.31 - version 1.0.0 Beta 31012024-1
+ * New - Enhanced HTML-model by from-to by element found
+ * New - Added position check for selectors which would stay above for CCSS (Critical CSS)
+ * New - CCSS: Added support for + and ~ in selectors
+ * New - CCSS: Added support for :where(, :not(, :is( and :has(
+ * New - CCSS: Added basic support for expressions in brackets [exp]
+ * New - Added use of (redis-)objectcache for the models
+ * Fix - Removed Automatic full scan for classes from javascript
+
+2023.12.22 - version 1.0.0 Beta 22122023-1
+ * New - Prepared a german translation, fixed some Typo-errors in strings
+
+2023.12.11 - version 1.0.0 Beta 11122023-1
+ * New - Added options "Exclude inline JS" and "Exclude inline CSS"
+
+2023.12.09 - version 1.0.0 Beta 09122023-1
+ * Fix - Added proper recognition for inline JS that is document.writing "<script>"-tags
+ * New - Added option "fix_html_defaults" in configuration.php with value = 1 (on). it removes default type-declarations in style and script-tags
+
+2023.10.22 - version 1.0.0 Beta 22102023-1
+ * New - Added "delete files"-button in "Overview"
+ * New - Added error_log-entires for references to missing CSS or JS-files in webpages
+ 
+2023.10.20 - version 1.0.0 Beta 20102023-1
+ * New - Added expand (Show more) to introduction-text in "Overview"-panel
+ * Fix - Automatic full scan for classes from javascript (when option is empty) runs with no JS-minify. That's less risky and cohers better to the process
+
+2023.10.18 - version 1.0.0 Beta 18102023-1 
+ * Tweak - Added new excludes the knowledgebase
+ * Fix - Automatic full scan for classes from javascript (when option is empty) triggers only if option generate_css_below_the_fold is on
+ * Fix - Made automatic correction for missing alt-attibutes in img-tags more bulletproof
+
+2023.10.16 - version 1.0.0 Beta 16102023-1 
+ * Fix - Added simple quoted expressions to scope of Scan of js-file-contents for classes that may add on documentload in the browswer
+ * Fix - Removed error_log entries from file /Classes/Controller/CSSAboveBelow.php
+
+2023.10.14 - version 1.0.0 Beta 14102023-1 
+ * Fix - Selectors containing :where(.class1, .class2) were not detected properly, the comma inside the brackets caused a (rare) error for critical CSS
+ * Fix - Removed more legacy code from file /Classes/Controller/CSSAboveBelow.php
+ 
+2023.10.12 - version 1.0.0 Beta 12102023-1 
+ * Tweak - Added automatic full scan for classes from javascript when option is empty
+ * Fix - Enhanced detection of jquery using "id='jquery-core-js'"
+
+2023.10.10 - version 1.0.0 Beta 10102023-1 
+ * Fix - Added numeric part classes and ids, that exclude in process forming md5 of document element cloud, again to the folding process
+
+2023.10.09 - version 1.0.0 Beta 09102023-1 
+ * New - Scan of js-file-contents for classes that may add on documentload in the browswer and that are better kept in CSS above the fold
+ * Fix - Removed legacy code from files in /Classes
+
+2023.10.05 - version 1.0.0 Beta 05102023-1
+ * Fix - On CSS-folding selectors containing ":where(" keep above the fold
+ * New - Added setting 'Load CSS below in slowmotion', allowing easier debugging of CSS-folding
+
+2023.10.04 - version 1.0.0 Beta 04102023-1
+ * Tweak - HTML Cleaning adding remove comments and generator metatags
+
+2023.09.20 - version 1.0.0 Beta 20092023-1
+ * Initial Beta release
